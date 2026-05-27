@@ -1,18 +1,32 @@
 import { X } from "lucide-react";
 import { useState, useMemo } from "react";
-import type { WeatherKey } from "../../types/weather";
+import type { MoodKey, WeatherKey } from "../../types/weather";
 import { WEATHER_OPTIONS } from "../../constants/weather";
 
+export type WriteModalValue = {
+    memoryDate: string;
+    title?: string;
+    content: string;
+    moodKey: MoodKey;
+    weatherKey: WeatherKey;
+    objectKey: string;
+    //   slotKey: ObjectSlotKey;
+};
+
 export function MemoryWriteModal({
+    initialDate,
     onClose,
+    onSave,
 }: {
+    initialDate: string;
     onClose: () => void;
+    onSave: (value: WriteModalValue) => void;
 }) {
     const today = useMemo(() => {
         return new Date().toISOString().split("T")[0];
     }, []);
 
-    const [memoryDate, setMemoryDate] = useState(today);
+    const [memoryDate, setMemoryDate] = useState(initialDate);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -113,7 +127,7 @@ export function MemoryWriteModal({
                     </button>
                     <button
                         type="button"
-                        // onClick={onClose}
+                        onClick={onSave}
                         className="bg-[#9b6b54] text-[#fffaf4] hover:bg-[#9b6b54]/90 rounded-md px-5 py-2 text-sm"
                     >
                         방에 남기기

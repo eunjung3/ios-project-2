@@ -8,6 +8,7 @@ import { Plus } from "lucide-react"
 import { Archive } from "lucide-react"
 import type { Memory } from "../types/memory";
 import type { WeatherKey } from "../types/weather";
+import { getTodayString } from "../utils/date";
 
 function RoomPage() {
     const [weather, setWeather] = useState<WeatherKey>('sunny');
@@ -16,7 +17,9 @@ function RoomPage() {
 
     // const today = getTodayString();
 
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState(
+        new Date().toISOString().split("T")[0]
+    );
     // const [viewYear, setViewYear] = useState(new Date().getFullYear());
     // const [viewMonth, setViewMonth] = useState(new Date().getMonth() + 1);
 
@@ -30,15 +33,8 @@ function RoomPage() {
         })
     }
 
-    // 임시 데이터 (나중에 교체)
-    const [memories] = useState<Memory[]>([
-        {
-            id: "1",
-            memoryDate: "2026-05-27",
-            title: "오늘의 기록",
-            content: "날씨가 맑았다",
-        },
-    ]);
+    const [memories, setMemories] = useState<Memory[]>([]);
+
 
     const selectedMemory = memories.find(
         (m) => m.memoryDate === selectedDate
@@ -79,6 +75,10 @@ function RoomPage() {
                 날씨: {weather}
             </button>
 
+            <button onClick={() => setIsWriteOpen(true)}>
+                기록하기
+            </button>
+
             {/* BODY AREA */}
             <div className="flex-1 overflow-auto p-8 py-10">
 
@@ -117,12 +117,23 @@ function RoomPage() {
             {isWriteOpen && (
                 <MemoryWriteModal
                     // mode="private"
-                    // initialDate={selectedDate}
+                    initialDate={selectedDate || getTodayString()}
                     onClose={() => setIsWriteOpen(false)}
-                // onSave={(value) => {
-                // console.log(value); // 아직 backend 없으니까 임시
-                // setIsWriteOpen(false);
-                // }}
+                    onSave={(value) => {
+                        setMemories((prev) => [
+                            ...prev,
+                            {
+                                id: crypto.randomUUID(),
+                                createdAt: new Date().toISOString(),
+                                memoryDate: value.memoryDate,
+                                title: value.title,
+                                content: value.content,
+                                weatherKey: value.weatherKey,
+                            },
+                        ]);
+
+                        setIsWriteOpen(false);
+                    }}
                 />
             )}
         </div>
