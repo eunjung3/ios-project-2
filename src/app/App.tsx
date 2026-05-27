@@ -1,12 +1,7 @@
-import Room from "../features/room/Room"
+import RoomPage from "../pages/RoomPage";
 
 function App() {
-
-  return (
-    <>
-    <Room />
-    </>
-  )
+  return <RoomPage />;
 }
 
-export default App
+export default App;

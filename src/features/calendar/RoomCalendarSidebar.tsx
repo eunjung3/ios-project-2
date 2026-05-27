@@ -1,0 +1,124 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+
+type Memory = {
+    id: string;
+    memoryDate: string;
+    title: string;
+    content: string;
+};
+
+export default function Calendar({
+    selectedDate,
+    onSelectDate,
+    memories,
+}: {
+    selectedDate: string;
+    onSelectDate: (date: string) => void;
+    memories: Memory[];
+}) {
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+
+    // 이번 달 시작 요일
+    const firstDay = new Date(year, month, 1).getDay();
+
+    // 이번 달 마지막 날짜
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    // 캘린더 배열 생성
+    const dates = [
+        ...Array(firstDay).fill(""),
+        ...Array.from({ length: lastDate }, (_, i) => i + 1),
+    ];
+
+    // 이전 달로 이동
+    const prevMonth = () => {
+        setCurrentDate(new Date(year, month - 1, 1));
+    };
+
+    // 다음 달로 이동
+    const nextMonth = () => {
+        setCurrentDate(new Date(year, month + 1, 1));
+    };
+
+    return (
+        <div className="h-full w-full bg-[#faf8f2] p-4 select-none">
+
+            {/* HEADER */}
+            <div className="mb-4 flex items-center justify-between">
+
+                <button onClick={prevMonth} className="grid h-8 w-8 place-items-center rounded-md hover:bg-[#5a4632]/10 transition-colors">
+                    <ChevronLeft size={16} className="text-[#5a4632]" />
+                </button>
+
+                <strong className="text-sm font-semibold text-[#5a4632]">
+                    {year}년 {month + 1}월
+                </strong>
+
+                <button onClick={nextMonth} className="grid h-8 w-8 place-items-center rounded-md hover:bg-[#5a4632]/10 transition-colors">
+                    <ChevronRight size={16} className="text-[#5a4632]" />
+                </button>
+
+            </div>
+
+            {/* CALENDAR */}
+            <div className="grid grid-cols-7 gap-1">
+
+                {/* DAY */}
+                {days.map((day) => (
+                    <div
+                        key={day}
+                        className="py-2 text-center text-[11px] text-[#5a4632]/50"
+                    >
+                        {day}
+                    </div>
+                ))}
+
+                {/* DATE */}
+                {dates.map((date, index) => {
+                    if (!date) {
+                        return (
+                            <div key={index} className="h-9" />
+                        );
+                    }
+
+                    const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+
+                    const isSelected = selectedDate === dateString;
+
+                    const hasMemory = memories.some(
+                        (m) => m.memoryDate === dateString
+                    );
+
+                    return (
+                        <button
+                            key={index}
+                            type="button"
+                            onClick={() => onSelectDate(dateString)}
+                            className={`
+                                flex  flex-col h-9 rounded-md flex items-center justify-center text-[12px]
+                                transition-colors cursor-pointer
+
+                                ${isSelected
+                                    ? "bg-[#5a4632]/20 text-[#5a4632] font-semibold"
+                                    : "text-[#5a4632] hover:bg-[#5a4632]/5"}
+                            `}
+                        >
+                            <span>{date}</span>
+
+                            {hasMemory && (
+                                <span className="mt-0.5 h-1 w-1 rounded-full bg-[#5a4632]/80" />
+                            )}
+                        </button>
+                    );
+                })}
+
+            </div>
+        </div>
+    );
+}

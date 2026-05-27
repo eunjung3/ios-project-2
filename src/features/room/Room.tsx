@@ -1,15 +1,21 @@
-// import "./room.css";
-// import Weather from "../weathers/Weather";
+import RoomImg from "../../assets/room3.png";
+import Weather from "../weathers/Weather";
 
-export default function Room() {
+type Props = {
+  weather: string
+}
+
+export default function Room({ weather }: Props) {
   return (
-    <div className="room">
+    <div className="relative w-full h-full overflow-hidden">
 
-      {/* 🔴 Weather (빨간 배경) */}
-      {/* <div className="weather" /> */}
+      <Weather weather={weather} />
 
-      {/* 🟡 방 (뚫린 레이어) */}
-      <img src="../assets/room3.png" alt="Room" className="room-image" />
+      <img
+        src={RoomImg}
+        alt="room"
+        className="absolute inset-0 w-full h-full object-cover object-left z-10 pointer-events-none"
+      />
 
     </div>
   );
