@@ -1,15 +1,16 @@
 import RoomImg from "../../assets/room3.png";
+import type { WeatherKey } from "../../types/weather";
 import Weather from "../weathers/Weather";
 
 type Props = {
-  weather: string
+  weatherKey: WeatherKey;
 }
 
-export default function Room({ weather }: Props) {
+export default function Room({ weatherKey }: Props) {
   return (
     <div className="relative w-full h-full overflow-hidden">
 
-      <Weather weather={weather} />
+      <Weather weather={weatherKey} />
 
       <img
         src={RoomImg}

@@ -1,0 +1,126 @@
+import { X } from "lucide-react";
+import { useState, useMemo } from "react";
+import type { WeatherKey } from "../../types/weather";
+import { WEATHER_OPTIONS } from "../../constants/weather";
+
+export function MemoryWriteModal({
+    onClose,
+}: {
+    onClose: () => void;
+}) {
+    const today = useMemo(() => {
+        return new Date().toISOString().split("T")[0];
+    }, []);
+
+    const [memoryDate, setMemoryDate] = useState(today);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
+    const [moodKey, setMoodKey] = useState<WeatherKey>("sunny");
+    // const [weatherKey, setWeatherKey] = useState<WeatherKey>("sunny");
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4 backdrop-blur-sm select-none">
+            <div className="bg-[#fffbf6c2] w-full max-w-[760px] max-h-[92vh] overflow-y-auto rounded-xl p-6">
+
+                {/* HEADER */}
+                <div className="mb-5 flex items-start justify-between">
+                    <h2 className="text-xl text-[#5a4632]">
+                        메모 작성
+                    </h2>
+
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="grid h-9 w-9 place-items-center rounded-md border border-[#5a4632]/10 hover:bg-black/5 text-[#5a4632]"
+                    >
+                        <X size={17} />
+                    </button>
+                </div>
+
+                <div className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
+                    <div className="flex flex-col gap-4">
+                        <label className="flex flex-col gap-2 text-sm text-[#5a4632]">
+                            날짜
+                            <input
+                                className="mw-input h-11 px-3 text-sm"
+                                type="date"
+                                value={memoryDate}
+                                max={today}
+                                // disabled={mode === "plaza"}
+                                onChange={(event) => setMemoryDate(event.target.value)}
+                            />
+                        </label>
+                        <label className="flex flex-col gap-2 text-sm text-[#5a4632]">
+                            제목
+                            <input
+                                className="mw-input h-11 px-3 text-sm"
+                                value={title}
+                                placeholder="제목 없는 기억"
+                                onChange={(event) => setTitle(event.target.value)}
+                            />
+                        </label>
+                        <label className="flex flex-col gap-2 text-sm text-[#5a4632]">
+                            내용
+                            <textarea
+                                className="mw-input min-h-[170px] resize-none p-3 text-sm leading-7"
+                                value={content}
+                                maxLength={500}
+                                // placeholder={mode === "plaza" ? "광장에 조용히 놓고 싶은 장면을 적어주세요." : "오늘은 어떤 날씨를 만들어 드릴까요?"}
+                                onChange={(event) => setContent(event.target.value)}
+                            />
+                            <span className="text-right text-[0.68rem] text-[#5a4632]">{content.length}/500</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <p className="mb-2 text-sm text-[#5a4632]">마음 상태와 날씨</p>
+                        <div className="grid grid-cols-3 gap-2">
+                            {WEATHER_OPTIONS.map((weather) => {
+                                const selected = moodKey === weather.key;
+
+                                return (
+                                    <button
+                                        key={weather.key}
+                                        type="button"
+                                        onClick={() => {
+                                            setMoodKey(weather.key);
+                                            // setWeatherKey(weather.key);
+                                        }}
+                                        className="rounded-md border px-3 py-2 text-left text-sm transition hover:bg-white/85"
+                                        style={{
+                                            borderColor: selected ? "rgba(200,150,106,0.62)" : "rgba(73, 63, 61, 0.13)",
+                                            background: selected ? "rgba(200,150,106,0.12)" : "rgba(73, 63, 61, 0.07)",
+                                        }}
+                                    >
+                                        <span className="mr-2">{weather.icon}</span>
+                                        {weather.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+
+                {/* FOOTER */}
+                <div className="mt-6 flex justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="border border-[#9b6b54]/60 bg-[#9b6b54]/10 hover:bg-[#9b6b54]/20 rounded-md px-5 py-2 text-sm text-[#9b6b54]/80"
+                    >
+                        닫기
+                    </button>
+                    <button
+                        type="button"
+                        // onClick={onClose}
+                        className="bg-[#9b6b54] text-[#fffaf4] hover:bg-[#9b6b54]/90 rounded-md px-5 py-2 text-sm"
+                    >
+                        방에 남기기
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    );
+}

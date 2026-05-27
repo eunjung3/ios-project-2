@@ -2,19 +2,26 @@ import { useState } from "react";
 import Room from "../features/room/Room"
 import RoomCalendarSidebar from "../features/calendar/RoomCalendarSidebar";
 import { RoomMemoryPanel } from "../features/memory/RoomMemoryPanel";
+import { MemoryWriteModal } from "../features/memory/MemoryWriteModal";
+// import { getTodayString } from "../utils/date";
 import { Plus } from "lucide-react"
 import { Archive } from "lucide-react"
 import type { Memory } from "../types/memory";
+import type { WeatherKey } from "../types/weather";
 
 function RoomPage() {
-    const [weather, setWeather] = useState('sunny');
+    const [weather, setWeather] = useState<WeatherKey>('sunny');
 
-    const [selectedDate, setSelectedDate] = useState("2026-05-27");
+    const [isWriteOpen, setIsWriteOpen] = useState(false);
+
+    // const today = getTodayString();
+
+    const [selectedDate, setSelectedDate] = useState("");
     // const [viewYear, setViewYear] = useState(new Date().getFullYear());
     // const [viewMonth, setViewMonth] = useState(new Date().getMonth() + 1);
 
 
-    const weatherList = ['sunny', 'rain', 'cloud', 'sunset']
+    const weatherList: WeatherKey[] = ['sunny', 'rain', 'cloud', 'sunset']
 
     const toggleWeather = () => {
         setWeather((prev) => {
@@ -22,26 +29,6 @@ function RoomPage() {
             return weatherList[(index + 1) % weatherList.length]
         })
     }
-
-    // const handlePrevMonth = () => {
-    //     setViewMonth((m) => {
-    //         if (m === 1) {
-    //             setViewYear((y) => y - 1);
-    //             return 12;
-    //         }
-    //         return m - 1;
-    //     });
-    // };
-
-    // const handleNextMonth = () => {
-    //     setViewMonth((m) => {
-    //         if (m === 12) {
-    //             setViewYear((y) => y + 1);
-    //             return 1;
-    //         }
-    //         return m + 1;
-    //     });
-    // };
 
     // 임시 데이터 (나중에 교체)
     const [memories] = useState<Memory[]>([
@@ -112,6 +99,7 @@ function RoomPage() {
                             <RoomMemoryPanel
                                 selectedDate={selectedDate}
                                 selectedMemory={selectedMemory}
+                                onWrite={() => setIsWriteOpen(true)}
                             // weatherText="맑음"
                             />
                         </div>
@@ -119,11 +107,24 @@ function RoomPage() {
 
                     {/* ROOM CARD */}
                     <div className="w-[1000px] h-[700px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
-                        <Room weather={weather} />
+                        <Room weatherKey={weather} />
                     </div>
 
                 </div>
             </div>
+
+
+            {isWriteOpen && (
+                <MemoryWriteModal
+                    // mode="private"
+                    // initialDate={selectedDate}
+                    onClose={() => setIsWriteOpen(false)}
+                // onSave={(value) => {
+                // console.log(value); // 아직 backend 없으니까 임시
+                // setIsWriteOpen(false);
+                // }}
+                />
+            )}
         </div>
     )
 }

@@ -1,0 +1,41 @@
+:root {
+    --mw-bg: #f3eee8;
+    --mw-bg-glow-1: rgba(126, 149, 177, 0.2);
+    --mw-bg-glow-2: rgba(202, 149, 110, 0.15);
+    --mw-header: rgba(248, 244, 238, 0.94);
+    --mw-panel: rgba(255, 251, 246, 0.76);
+    --mw-panel-hover: rgba(74, 88, 108, 0.065);
+    --mw-soft-fill: rgba(98, 85, 78, 0.055);
+    --mw-soft-fill-strong: rgba(98, 85, 78, 0.1);
+    --mw-border: rgba(73, 63, 61, 0.13);
+    --mw-border-strong: rgba(73, 63, 61, 0.2);
+    --mw-text: #5a4632;
+    --mw-heading: #3d3438;
+    --mw-muted: rgba(51, 47, 50, 0.62);
+    --mw-muted-soft: rgba(51, 47, 50, 0.42);
+    --mw-brand: #806554;
+    --mw-accent: #9b6b54;
+    --mw-accent-soft: rgba(155, 107, 84, 0.1);
+    --mw-accent-hover: rgba(155, 107, 84, 0.16);
+    --mw-solid-text: #fffaf4;
+    --mw-input: rgba(255, 255, 255, 0.58);
+    --mw-tooltip: #fffaf4;
+    --mw-overlay: rgba(39, 32, 33, 0.42);
+}
+
+.mw-input {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--mw-border-strong);
+    background: var(--mw-input);
+    color: var(--mw-text);
+    outline: none;
+}
+
+.mw-input::placeholder {
+    color: var(--mw-muted-soft);
+}
+
+.mw-input:focus {
+    border-color: color-mix(in srgb, var(--mw-accent) 64%, transparent);
+}

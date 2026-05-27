@@ -19,6 +19,11 @@ export default function Calendar({
 }) {
     const [currentDate, setCurrentDate] = useState(new Date());
 
+    const today = new Date();
+
+    const todayString =
+        `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
@@ -47,7 +52,7 @@ export default function Calendar({
     };
 
     return (
-        <div className="h-full w-full bg-[#faf8f2] p-4 select-none">
+        <div className="h-full w-full bg-[#faf8f2] p-4 ">
 
             {/* HEADER */}
             <div className="mb-4 flex items-center justify-between">
@@ -89,6 +94,8 @@ export default function Calendar({
 
                     const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
 
+                    const isFuture = dateString > todayString;
+
                     const isSelected = selectedDate === dateString;
 
                     const hasMemory = memories.some(
@@ -99,14 +106,21 @@ export default function Calendar({
                         <button
                             key={index}
                             type="button"
-                            onClick={() => onSelectDate(dateString)}
+                            onClick={() => {
+                                if (!date || isFuture) return;
+                                onSelectDate(dateString);
+                            }}
                             className={`
                                 flex  flex-col h-9 rounded-md flex items-center justify-center text-[12px]
                                 transition-colors cursor-pointer
 
-                                ${isSelected
-                                    ? "bg-[#5a4632]/20 text-[#5a4632] font-semibold"
-                                    : "text-[#5a4632] hover:bg-[#5a4632]/5"}
+                                ${!date
+                                    ? "pointer-events-none"
+                                    : isFuture
+                                        ? "text-[#5a4632]/20 cursor-not-allowed pointer-events-none"
+                                        : isSelected
+                                            ? "bg-[#5a4632]/20 text-[#5a4632] font-semibold"
+                                            : "text-[#5a4632] hover:bg-[#5a4632]/5 cursor-pointer"}
                             `}
                         >
                             <span>{date}</span>

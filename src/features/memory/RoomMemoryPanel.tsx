@@ -8,7 +8,7 @@ type Props = {
     // today: string;
     // weatherIcon: string;
     // weatherText: string;
-    // onWrite: () => void;
+    onWrite: () => void;
 };
 
 export function RoomMemoryPanel({
@@ -17,7 +17,7 @@ export function RoomMemoryPanel({
     // today,
     // weatherIcon,
     // weatherText,
-    // onWrite,
+    onWrite,
 }: Props) {
     return (
         <section className="mw-surface rounded-xl p-5 h-full">
@@ -58,7 +58,7 @@ export function RoomMemoryPanel({
                     {selectedDate !== "" && (
                         <button
                             type="button"
-                            // onClick={onWrite}
+                            onClick={onWrite}
                             className="mw-button border border-[#5a4632]/30 bg-[#d8bd9a]/20 mt-5 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-[#5a4632]/80"
                         >
                             <PenLine size={15} />
