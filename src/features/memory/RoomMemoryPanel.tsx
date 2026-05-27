@@ -20,7 +20,7 @@ export function RoomMemoryPanel({
     onWrite,
 }: Props) {
     return (
-        <section className="mw-surface rounded-xl p-5 h-full">
+        <section className="mw-surface rounded-xl p-5 h-full select-none">
 
             {/* DATE */}
             <div className="mb-3 flex items-center gap-2 text-sm text-[#5a4632]/80">

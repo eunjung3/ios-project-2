@@ -1,21 +1,21 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
-type Memory = {
-    id: string;
-    memoryDate: string;
-    title: string;
-    content: string;
-};
+// type Memory = {
+//     id: string;
+//     memoryDate: string;
+//     title: string;
+//     content: string;
+// };
 
 export default function Calendar({
     selectedDate,
     onSelectDate,
-    memories,
+    // memories,
 }: {
     selectedDate: string;
     onSelectDate: (date: string) => void;
-    memories: Memory[];
+    // memories: Memory[];
 }) {
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -52,7 +52,7 @@ export default function Calendar({
     };
 
     return (
-        <div className="h-full w-full bg-[#faf8f2] p-4 ">
+        <div className="h-full w-full bg-[#faf8f2] p-4 select-none">
 
             {/* HEADER */}
             <div className="mb-4 flex items-center justify-between">
@@ -98,9 +98,9 @@ export default function Calendar({
 
                     const isSelected = selectedDate === dateString;
 
-                    const hasMemory = memories.some(
-                        (m) => m.memoryDate === dateString
-                    );
+                    // const hasMemory = memories.some(
+                    //     (m) => m.memoryDate === dateString
+                    // );
 
                     return (
                         <button
@@ -125,9 +125,9 @@ export default function Calendar({
                         >
                             <span>{date}</span>
 
-                            {hasMemory && (
+                            {/* {hasMemory && (
                                 <span className="mt-0.5 h-1 w-1 rounded-full bg-[#5a4632]/80" />
-                            )}
+                            )} */}
                         </button>
                     );
                 })}

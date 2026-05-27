@@ -16,7 +16,7 @@ export type WriteModalValue = {
 export function MemoryWriteModal({
     initialDate,
     onClose,
-    onSave,
+    // onSave,
 }: {
     initialDate: string;
     onClose: () => void;
@@ -127,7 +127,7 @@ export function MemoryWriteModal({
                     </button>
                     <button
                         type="button"
-                        onClick={onSave}
+                        // onClick={onSave}
                         className="bg-[#9b6b54] text-[#fffaf4] hover:bg-[#9b6b54]/90 rounded-md px-5 py-2 text-sm"
                     >
                         방에 남기기

@@ -1,14 +1,15 @@
 import { useState } from "react";
-import Room from "../features/room/Room"
-import RoomCalendarSidebar from "../features/calendar/RoomCalendarSidebar";
-import { RoomMemoryPanel } from "../features/memory/RoomMemoryPanel";
-import { MemoryWriteModal } from "../features/memory/MemoryWriteModal";
+import Room from "../room/Room"
+import RoomCalendarSidebar from "../calendar/RoomCalendarSidebar";
+import { RoomMemoryPanel } from "../memory/RoomMemoryPanel";
+import { MemoryWriteModal } from "../memory/MemoryWriteModal";
 // import { getTodayString } from "../utils/date";
-import { Plus } from "lucide-react"
+import { LogOut, Plus } from "lucide-react"
 import { Archive } from "lucide-react"
-import type { Memory } from "../types/memory";
-import type { WeatherKey } from "../types/weather";
-import { getTodayString } from "../utils/date";
+import type { Memory } from "../../types/memory";
+import type { WeatherKey } from "../../types/weather";
+import { getTodayString } from "../../utils/date";
+import { Link } from "react-router-dom";
 
 function RoomPage() {
     const [weather, setWeather] = useState<WeatherKey>('sunny');
@@ -46,29 +47,40 @@ function RoomPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#e8e6e0] flex flex-col">
+        <div className="min-h-screen bg-[#e8e6e0] flex flex-col select-none">
 
             {/* TOP NAV */}
             <nav className="sticky top-0 z-50 w-full bg-[#faf7f0] shadow-xs border-b border-[#5a4632]/20">
-                <div className="max-w-[1400px] mx-auto px-8 py-2 flex items-center justify-between">
+                <div className="max-w-[1400px] h-16 mx-auto px-16 py-2 flex items-center justify-between">
 
-                    <span className="font-bold text-lg text-[#5a4632]">마음의 날씨</span>
+                    <Link to="/" className="font-bold text-lg text-[#5a4632]">
+                        마음의 날씨
+                    </Link>
+                    {/* <span className="font-bold text-lg text-[#5a4632]">마음의 날씨</span> */}
 
                     <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <Link to="/login"
+                        className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors"
+                        >
+                        로그인
+                        </Link>
                         <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">내 방</button>
                         <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">우편함</button>
                         <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">마이페이지</button>
-                        <button className="p-2 rounded-md border border-[#5a4632]/20 text-[#5a4632]/80">
+                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
                             <Plus size={14} />
                         </button>
-                        <button className="p-2 rounded-md border border-[#5a4632]/20 text-[#5a4632]/80">
+                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
                             <Archive size={14} />
+                        </button>
+                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
+                            <LogOut size={14} />
                         </button>
                     </div>
                 </div>
             </nav>
 
-            <button
+            {/* <button
                 onClick={toggleWeather}
                 className="w-[120px] px-3 py-2 bg-[#5a4632] text-white rounded-md hover:bg-[#5a4632]/90"
             >
@@ -77,25 +89,25 @@ function RoomPage() {
 
             <button onClick={() => setIsWriteOpen(true)}>
                 기록하기
-            </button>
+            </button> */}
 
             {/* BODY AREA */}
-            <div className="flex-1 overflow-auto p-8 py-10">
+            <div className="flex-1 overflow-auto px-16 py-8">
 
-                <div className="flex justify-center gap-6 min-w-fit">
+                <div className="flex justify-center gap-4 min-w-fit">
 
                     {/* LEFT CARD */}
                     <div className="w-[320px] flex flex-col gap-4">
 
-                        <div className="h-[380px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
+                        <div className="h-[360px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
                             <RoomCalendarSidebar
                                 selectedDate={selectedDate}
                                 onSelectDate={handleSelectDate}
-                                memories={memories}
+                                // memories={memories}
                             />
                         </div>
 
-                        <div className="h-[300px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
+                        <div className="h-[254px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
                             <RoomMemoryPanel
                                 selectedDate={selectedDate}
                                 selectedMemory={selectedMemory}
@@ -106,7 +118,7 @@ function RoomPage() {
                     </div>
 
                     {/* ROOM CARD */}
-                    <div className="w-[1000px] h-[700px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
+                    <div className="w-[900px] h-[630px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
                         <Room weatherKey={weather} />
                     </div>
 
@@ -126,7 +138,7 @@ function RoomPage() {
                                 id: crypto.randomUUID(),
                                 createdAt: new Date().toISOString(),
                                 memoryDate: value.memoryDate,
-                                title: value.title,
+                                title: value.title ?? "",
                                 content: value.content,
                                 weatherKey: value.weatherKey,
                             },
