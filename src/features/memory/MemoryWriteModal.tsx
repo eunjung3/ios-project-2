@@ -88,7 +88,7 @@ export function MemoryWriteModal({
                     </div>
 
                     <div>
-                        <p className="mb-2 text-sm text-[#5a4632]">마음 상태와 날씨</p>
+                        <p className="mb-2 text-sm text-[#5a4632]">마음 상태</p>
                         <div className="grid grid-cols-3 gap-2">
                             {WEATHER_OPTIONS.map((weather) => {
                                 const selected = moodKey === weather.key;

@@ -55,6 +55,18 @@
     border: 1px solid var(--mw-border);
 }
 
+.mw-button {
+    border: 1px solid color-mix(in srgb, var(--mw-accent) 46%, transparent);
+    background: var(--mw-accent-soft);
+    color: var(--mw-accent);
+    transition: background-color 160ms ease, border-color 160ms ease, opacity 160ms ease;
+}
+
+.mw-button:hover {
+    background: var(--mw-accent-hover);
+    border-color: color-mix(in srgb, var(--mw-accent) 64%, transparent);
+}
+
 .mw-button-solid {
     /* 주요 행동 버튼: 글 저장, 시작하기처럼 확실한 행동에 사용합니다. */
     border: 1px solid color-mix(in srgb, var(--mw-accent) 76%, transparent);

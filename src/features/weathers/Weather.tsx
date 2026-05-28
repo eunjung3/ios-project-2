@@ -2,6 +2,8 @@ import Sunny from './SunnyWeather'
 import Rain from './RainWeather'
 import Cloud from './CloudWeather'
 import Sunset from './SunsetWeather'
+import Night from './NightWeather'
+import Dawn from './DawnWeather'
 import type { WeatherKey } from '../../types/weather'
 
 type Props = {
@@ -15,6 +17,8 @@ export default function Weather({ weather }: Props) {
       {weather === 'rain' && <Rain />}
       {weather === 'cloud' && <Cloud />}
       {weather === 'sunset' && <Sunset />}
+      {weather === 'night' && <Night />}
+      {weather === 'dawn' && <Dawn />}
     </div>
   )
 }

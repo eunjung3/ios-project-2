@@ -1,13 +1,18 @@
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { setAuthenticated } from "../../utils/authSession";
 // import { useAppStore } from "../../stores/AppStore";
 
 // 백엔드 로그인 API를 호출하는 로그인 폼입니다.
 export function LoginForm() {
   //   const { login, navigate } = useAppStore();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -29,6 +34,8 @@ export function LoginForm() {
       setIsSubmitting(true);
       // 이번 API 연동 변경: 제출 시 authService가 /api/auth/login을 호출합니다.
       // await login({ email, password });
+      setAuthenticated();
+      navigate("/room", { replace: true });
     } catch {
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
     } finally {
@@ -52,12 +59,23 @@ export function LoginForm() {
 
       <label className="flex flex-col gap-2 text-sm">
         비밀번호
-        <input
-          className="mw-input h-11 px-3 text-sm"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+        <div className="relative">
+          <input
+            className="mw-input h-11 px-3 text-sm"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center text-[#5a4632]/60 hover:text-[#5a4632]"
+            aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+            title={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+          >
+            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
       </label>
 
       {error && <p className="text-sm text-[#e6a1a1]">{error}</p>}
@@ -68,9 +86,9 @@ export function LoginForm() {
 
       <p className="text-center text-xs text-white/38">
         처음 오셨나요?
-        <button type="button" className="ml-2 text-[#d8bd9a] text-xs hover:text-[#ead2b1]">
+        <Link to="/signup" state={{ fromLanding: true }} className="ml-2 text-[#d8bd9a] text-xs hover:text-[#ead2b1]">
           회원가입
-        </button>
+        </Link>
       </p>
     </form>
   );

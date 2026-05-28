@@ -1,13 +1,80 @@
-import { Routes, Route } from "react-router-dom";
+import type { ReactNode } from "react";
+import { Navigate, Routes, Route, useLocation } from "react-router-dom";
 import RoomPage from "../features/pages/RoomPage";
 import LoginPage from "../features/pages/LoginPage";
+import { SignupPage } from "../features/pages/SignupPage";
+import { LandingPage } from "../features/pages/LandingPage";
+import { isAuthenticated } from "../utils/authSession";
 import "../styles/App.css";
+
+type RouteGuardProps = {
+  children: ReactNode;
+};
+
+type AuthRouteState = {
+  fromLanding?: boolean;
+};
+
+function LandingRoute() {
+  return isAuthenticated() ? <Navigate to="/room" replace /> : <LandingPage />;
+}
+
+function ProtectedRoute({ children }: RouteGuardProps) {
+  if (!isAuthenticated()) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function AuthEntryRoute({ children }: RouteGuardProps) {
+  const location = useLocation();
+  const routeState = location.state as AuthRouteState | null;
+
+  if (isAuthenticated()) {
+    return <Navigate to="/room" replace />;
+  }
+
+  if (!routeState?.fromLanding) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function FallbackRoute() {
+  return <Navigate to={isAuthenticated() ? "/room" : "/"} replace />;
+}
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<RoomPage />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LandingRoute />} />
+      <Route
+        path="/room"
+        element={
+          <ProtectedRoute>
+            <RoomPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <AuthEntryRoute>
+            <LoginPage />
+          </AuthEntryRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <AuthEntryRoute>
+            <SignupPage />
+          </AuthEntryRoute>
+        }
+      />
+      <Route path="*" element={<FallbackRoute />} />
     </Routes>
   );
 }
