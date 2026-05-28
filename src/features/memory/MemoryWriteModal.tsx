@@ -128,7 +128,7 @@ export function MemoryWriteModal({
                     <button
                         type="button"
                         // onClick={onSave}
-                        className="bg-[#9b6b54] text-[#fffaf4] hover:bg-[#9b6b54]/90 rounded-md px-5 py-2 text-sm"
+                        className="mw-button-solid rounded-md px-5 py-2 text-sm"
                     >
                         방에 남기기
                     </button>

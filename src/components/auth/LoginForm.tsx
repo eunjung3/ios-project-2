@@ -1,9 +1,10 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 // import { useAppStore } from "../../stores/AppStore";
 
 // 백엔드 로그인 API를 호출하는 로그인 폼입니다.
 export function LoginForm() {
-//   const { login, navigate } = useAppStore();
+  //   const { login, navigate } = useAppStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,8 +20,8 @@ export function LoginForm() {
       return;
     }
 
-    if (password.length < 8) {
-      setError("비밀번호는 8자 이상이어야 합니다.");
+    if (!password.trim()) {
+      setError("비밀번호를 입력해주세요.");
       return;
     }
 
@@ -29,27 +30,27 @@ export function LoginForm() {
       // 이번 API 연동 변경: 제출 시 authService가 /api/auth/login을 호출합니다.
       // await login({ email, password });
     } catch {
-      setError("이메일 또는 비밀번호가 맞지 않습니다.");
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mw-surface mx-auto flex w-full max-w-[420px] flex-col gap-4 rounded-xl p-8">
+    <form onSubmit={handleSubmit} className="mw-surface mx-auto flex w-full max-w-[420px] flex-col gap-4 rounded-xl p-8 select-none">
       <div>
-        <p className="mb-2 text-[0.68rem] tracking-[0.2em] text-white/30">LOGIN</p>
-        <h1 className="text-xl font-normal text-[#e0d2ba]" style={{ fontFamily: "'Noto Serif KR', Georgia, serif" }}>
+        <p className="mb-2 text-[0.68rem] tracking-[0.2em] text-[#e0d2ba]">LOGIN</p>
+        {/* <h1 className="text-xl font-normal text-[#e0d2ba]" style={{ fontFamily: "'Noto Serif KR', Georgia, serif" }}>
           다시 방으로 돌아가기
-        </h1>
+        </h1> */}
       </div>
 
-      <label className="flex flex-col gap-2 text-sm text-white/54">
+      <label className="flex flex-col gap-2 text-sm">
         이메일
         <input className="mw-input h-11 px-3 text-sm" value={email} onChange={(event) => setEmail(event.target.value)} />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm text-white/54">
+      <label className="flex flex-col gap-2 text-sm">
         비밀번호
         <input
           className="mw-input h-11 px-3 text-sm"
@@ -61,13 +62,13 @@ export function LoginForm() {
 
       {error && <p className="text-sm text-[#e6a1a1]">{error}</p>}
 
-      <button type="submit" disabled={isSubmitting} className="mw-button-solid mt-2 rounded-md px-5 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50">
+      <button type="submit" disabled={isSubmitting} className="mw-button-solid mt-2 rounded-md px-5 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer">
         {isSubmitting ? "로그인 중" : "로그인"}
       </button>
 
-      <p className="text-center text-sm text-white/38">
+      <p className="text-center text-xs text-white/38">
         처음 오셨나요?
-        <button type="button" className="ml-2 text-[#d8bd9a] hover:text-[#ead2b1]">
+        <button type="button" className="ml-2 text-[#d8bd9a] text-xs hover:text-[#ead2b1]">
           회원가입
         </button>
       </p>

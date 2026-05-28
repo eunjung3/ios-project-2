@@ -4,15 +4,13 @@ import RoomCalendarSidebar from "../calendar/RoomCalendarSidebar";
 import { RoomMemoryPanel } from "../memory/RoomMemoryPanel";
 import { MemoryWriteModal } from "../memory/MemoryWriteModal";
 // import { getTodayString } from "../utils/date";
-import { LogOut, Plus } from "lucide-react"
-import { Archive } from "lucide-react"
+import { AppHeader } from "../../components/layout/AppHeader";
 import type { Memory } from "../../types/memory";
 import type { WeatherKey } from "../../types/weather";
 import { getTodayString } from "../../utils/date";
-import { Link } from "react-router-dom";
 
 function RoomPage() {
-    const [weather, setWeather] = useState<WeatherKey>('sunny');
+    const [weather] = useState<WeatherKey>('sunny');
 
     const [isWriteOpen, setIsWriteOpen] = useState(false);
 
@@ -23,16 +21,6 @@ function RoomPage() {
     );
     // const [viewYear, setViewYear] = useState(new Date().getFullYear());
     // const [viewMonth, setViewMonth] = useState(new Date().getMonth() + 1);
-
-
-    const weatherList: WeatherKey[] = ['sunny', 'rain', 'cloud', 'sunset']
-
-    const toggleWeather = () => {
-        setWeather((prev) => {
-            const index = weatherList.indexOf(prev)
-            return weatherList[(index + 1) % weatherList.length]
-        })
-    }
 
     const [memories, setMemories] = useState<Memory[]>([]);
 
@@ -47,38 +35,8 @@ function RoomPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#e8e6e0] flex flex-col select-none">
-
-            {/* TOP NAV */}
-            <nav className="sticky top-0 z-50 w-full bg-[#faf7f0] shadow-xs border-b border-[#5a4632]/20">
-                <div className="max-w-[1400px] h-16 mx-auto px-16 py-2 flex items-center justify-between">
-
-                    <Link to="/" className="font-bold text-lg text-[#5a4632]">
-                        마음의 날씨
-                    </Link>
-                    {/* <span className="font-bold text-lg text-[#5a4632]">마음의 날씨</span> */}
-
-                    <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <Link to="/login"
-                        className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors"
-                        >
-                        로그인
-                        </Link>
-                        <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">내 방</button>
-                        <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">우편함</button>
-                        <button className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">마이페이지</button>
-                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
-                            <Plus size={14} />
-                        </button>
-                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
-                            <Archive size={14} />
-                        </button>
-                        <button className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80">
-                            <LogOut size={14} />
-                        </button>
-                    </div>
-                </div>
-            </nav>
+        <div className="mw-app min-h-screen flex flex-col select-none">
+            <AppHeader />
 
             {/* <button
                 onClick={toggleWeather}
@@ -103,7 +61,7 @@ function RoomPage() {
                             <RoomCalendarSidebar
                                 selectedDate={selectedDate}
                                 onSelectDate={handleSelectDate}
-                                // memories={memories}
+                            // memories={memories}
                             />
                         </div>
 
