@@ -39,6 +39,7 @@ function RoomPage() {
     const selectedMemory = memories.find(
         (m) => m.memoryDate === selectedDate
     ) || null;
+    const roomWeather = selectedMemory?.weatherKey ?? weather;
 
     // 날짜 선택
     const handleSelectDate = (date: string) => {
@@ -72,7 +73,7 @@ function RoomPage() {
                             <RoomCalendarSidebar
                                 selectedDate={selectedDate}
                                 onSelectDate={handleSelectDate}
-                            // memories={memories}
+                                memories={memories}
                             />
                         </div>
 
@@ -88,7 +89,7 @@ function RoomPage() {
 
                     {/* ROOM CARD */}
                     <div className="w-[1120px] h-[630px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
-                        <Room weatherKey={weather} />
+                        <Room weatherKey={roomWeather} />
                     </div>
 
                 </div>
@@ -109,6 +110,7 @@ function RoomPage() {
                                 memoryDate: value.memoryDate,
                                 title: value.title ?? "",
                                 content: value.content,
+                                moodKey: value.moodKey,
                                 weatherKey: value.weatherKey,
                             },
                         ]);

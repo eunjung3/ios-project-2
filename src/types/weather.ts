@@ -1,7 +1,5 @@
 export type WeatherKey = "sunny" | "rain" | "cloud" | "sunset" | "night" | "dawn";
 
-export type MoodKey = WeatherKey;
-
 export type WeatherTone = {
     key: WeatherKey;
     label: string;

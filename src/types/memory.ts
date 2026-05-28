@@ -1,6 +1,5 @@
 // import type { ObjectSlotKey } from "./object";
-// import type { MoodKey, WeatherKey } from "./weather";
-
+import type { MoodKey } from "./mood";
 import type { WeatherKey } from "./weather";
 
 // 개인 방에 남기는 하루 기록입니다.
@@ -11,5 +10,6 @@ export type Memory = {
     createdAt: string;
     title?: string;
     content: string;
+    moodKey: MoodKey;
     weatherKey: WeatherKey;
 };

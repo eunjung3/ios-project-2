@@ -1,7 +1,7 @@
 import RoomImg from "../../assets/room3-clean.png";
-import FurnitureBookshelf from "../../assets/furniture-bookshelf-cropped.png";
 import { WEATHER_BY_KEY } from "../../constants/weather";
 import type { WeatherKey } from "../../types/weather";
+import FurnitureBookshelf from "../../assets/furniture-modular/furniture-plant.png";
 import Weather from "../weathers/Weather";
 
 type Props = {
@@ -48,14 +48,14 @@ export default function Room({ weatherKey }: Props) {
         }}
       />
 
-      {/* <img
+      <img
         src={FurnitureBookshelf}
         alt=""
-        className="absolute bottom-[170px] right-[496px] z-[15] w-[360px] pointer-events-none transition-[filter] duration-500"
+        className="absolute bottom-[170px] right-[496px] z-[15] w-[80px] pointer-events-none transition-[filter] duration-500"
         style={{
           filter: ROOM_FILTER_BY_WEATHER[weatherKey],
         }}
-      /> */}
+      />
 
       <div
         className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500"

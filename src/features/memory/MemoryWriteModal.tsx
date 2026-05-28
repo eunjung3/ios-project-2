@@ -1,7 +1,8 @@
 import { X } from "lucide-react";
 import { useState, useMemo } from "react";
-import type { MoodKey, WeatherKey } from "../../types/weather";
-import { WEATHER_OPTIONS } from "../../constants/weather";
+import type { WeatherKey } from "../../types/weather";
+import type { MoodKey } from "../../types/mood";
+import { MOOD_BY_KEY, MOOD_OPTIONS } from "../../constants/mood";
 
 export type WriteModalValue = {
     memoryDate: string;
@@ -16,7 +17,7 @@ export type WriteModalValue = {
 export function MemoryWriteModal({
     initialDate,
     onClose,
-    // onSave,
+    onSave,
 }: {
     initialDate: string;
     onClose: () => void;
@@ -30,8 +31,19 @@ export function MemoryWriteModal({
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
-    const [moodKey, setMoodKey] = useState<WeatherKey>("sunny");
-    // const [weatherKey, setWeatherKey] = useState<WeatherKey>("sunny");
+    const [moodKey, setMoodKey] = useState<MoodKey>("joy");
+    const selectedMood = MOOD_BY_KEY[moodKey];
+
+    const handleSave = () => {
+        onSave({
+            memoryDate,
+            title: title.trim() || undefined,
+            content: content.trim(),
+            moodKey,
+            weatherKey: selectedMood.weatherKey,
+            objectKey: "",
+        });
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4 backdrop-blur-sm select-none">
@@ -74,32 +86,20 @@ export function MemoryWriteModal({
                                 onChange={(event) => setTitle(event.target.value)}
                             />
                         </label>
-                        <label className="flex flex-col gap-2 text-sm text-[#5a4632]">
-                            내용
-                            <textarea
-                                className="mw-input min-h-[170px] resize-none p-3 text-sm leading-7"
-                                value={content}
-                                maxLength={500}
-                                // placeholder={mode === "plaza" ? "광장에 조용히 놓고 싶은 장면을 적어주세요." : "오늘은 어떤 날씨를 만들어 드릴까요?"}
-                                onChange={(event) => setContent(event.target.value)}
-                            />
-                            <span className="text-right text-[0.68rem] text-[#5a4632]">{content.length}/500</span>
-                        </label>
                     </div>
 
                     <div>
                         <p className="mb-2 text-sm text-[#5a4632]">마음 상태</p>
                         <div className="grid grid-cols-3 gap-2">
-                            {WEATHER_OPTIONS.map((weather) => {
-                                const selected = moodKey === weather.key;
+                            {MOOD_OPTIONS.map((mood) => {
+                                const selected = moodKey === mood.key;
 
                                 return (
                                     <button
-                                        key={weather.key}
+                                        key={mood.key}
                                         type="button"
                                         onClick={() => {
-                                            setMoodKey(weather.key);
-                                            // setWeatherKey(weather.key);
+                                            setMoodKey(mood.key);
                                         }}
                                         className="rounded-md border px-3 py-2 text-left text-sm transition hover:bg-white/85"
                                         style={{
@@ -107,14 +107,26 @@ export function MemoryWriteModal({
                                             background: selected ? "rgba(200,150,106,0.12)" : "rgba(73, 63, 61, 0.07)",
                                         }}
                                     >
-                                        <span className="mr-2">{weather.icon}</span>
-                                        {weather.label}
+                                        <span className="mr-2">{mood.icon}</span>
+                                        {mood.label}
                                     </button>
                                 );
                             })}
                         </div>
                     </div>
                 </div>
+
+                <label className="mt-5 flex flex-col gap-2 text-sm text-[#5a4632]">
+                    내용
+                    <textarea
+                        className="mw-input min-h-[170px] resize-none p-3 text-sm leading-7"
+                        value={content}
+                        maxLength={500}
+                        // placeholder={mode === "plaza" ? "광장에 조용히 놓고 싶은 장면을 적어주세요." : "오늘은 어떤 날씨를 만들어 드릴까요?"}
+                        onChange={(event) => setContent(event.target.value)}
+                    />
+                    <span className="text-right text-[0.68rem] text-[#5a4632]">{content.length}/500</span>
+                </label>
 
                 {/* FOOTER */}
                 <div className="mt-6 flex justify-end gap-3">
@@ -127,7 +139,7 @@ export function MemoryWriteModal({
                     </button>
                     <button
                         type="button"
-                        // onClick={onSave}
+                        onClick={handleSave}
                         className="mw-button-solid rounded-md px-5 py-2 text-sm"
                     >
                         방에 남기기
