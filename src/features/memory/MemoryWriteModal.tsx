@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import type { WeatherKey } from "../../types/weather";
 import type { MoodKey } from "../../types/mood";
 import { MOOD_BY_KEY, MOOD_OPTIONS } from "../../constants/mood";
+import { MemoryObjectSelectModal } from "./MemoryObjectSelectModal";
 
 export type WriteModalValue = {
     memoryDate: string;
@@ -13,6 +14,8 @@ export type WriteModalValue = {
     objectKey: string;
     //   slotKey: ObjectSlotKey;
 };
+
+type WriteDraftValue = Omit<WriteModalValue, "objectKey">;
 
 export function MemoryWriteModal({
     initialDate,
@@ -32,18 +35,33 @@ export function MemoryWriteModal({
     const [content, setContent] = useState("");
 
     const [moodKey, setMoodKey] = useState<MoodKey>("joy");
+    const [draftValue, setDraftValue] = useState<WriteDraftValue | null>(null);
     const selectedMood = MOOD_BY_KEY[moodKey];
 
-    const handleSave = () => {
-        onSave({
+    const handleNext = () => {
+        setDraftValue({
             memoryDate,
             title: title.trim() || undefined,
             content: content.trim(),
             moodKey,
             weatherKey: selectedMood.weatherKey,
-            objectKey: "",
         });
     };
+
+    if (draftValue) {
+        return (
+            <MemoryObjectSelectModal
+                onBack={() => setDraftValue(null)}
+                onClose={onClose}
+                onSave={(objectKey) => {
+                    onSave({
+                        ...draftValue,
+                        objectKey,
+                    });
+                }}
+            />
+        );
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4 backdrop-blur-sm select-none">
@@ -139,10 +157,10 @@ export function MemoryWriteModal({
                     </button>
                     <button
                         type="button"
-                        onClick={handleSave}
+                        onClick={handleNext}
                         className="mw-button-solid rounded-md px-5 py-2 text-sm"
                     >
-                        방에 남기기
+                        다음
                     </button>
                 </div>
 

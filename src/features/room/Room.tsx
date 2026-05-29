@@ -2,6 +2,8 @@ import RoomImg from "../../assets/room3-clean.png";
 import { WEATHER_BY_KEY } from "../../constants/weather";
 import type { WeatherKey } from "../../types/weather";
 import FurnitureBookshelf from "../../assets/furniture-modular/furniture-plant.png";
+import FurnitureBook from "../../assets/furniture-modular/furniture-books.png";
+import Furnitureframe from "../../assets/furniture-modular/furniture-frame.png";
 import Weather from "../weathers/Weather";
 
 type Props = {
@@ -14,7 +16,7 @@ const ROOM_FILTER_BY_WEATHER: Record<WeatherKey, string> = {
   cloud: "saturate(0.72) brightness(0.94) contrast(0.98)",
   sunset: "saturate(1.14) brightness(0.96) sepia(0.18) contrast(1.05)",
   night: "saturate(0.72) brightness(0.7) contrast(1.1) hue-rotate(8deg)",
-  dawn: "saturate(0.9) brightness(0.96) sepia(0.08) contrast(1.02)",
+  dawn: "saturate(0.9) brightness(0.9) sepia(0.08) contrast(1.02)",
 };
 
 const ROOM_TINT_OPACITY_BY_WEATHER: Record<WeatherKey, number> = {
@@ -52,6 +54,24 @@ export default function Room({ weatherKey }: Props) {
         src={FurnitureBookshelf}
         alt=""
         className="absolute bottom-[170px] right-[496px] z-[15] w-[80px] pointer-events-none transition-[filter] duration-500"
+        style={{
+          filter: ROOM_FILTER_BY_WEATHER[weatherKey],
+        }}
+      />
+
+      <img
+        src={FurnitureBook}
+        alt=""
+        className="absolute bottom-[170px] right-[766px] z-[15] w-[80px] pointer-events-none transition-[filter] duration-500"
+        style={{
+          filter: ROOM_FILTER_BY_WEATHER[weatherKey],
+        }}
+      />
+
+      <img
+        src={Furnitureframe}
+        alt=""
+        className="absolute bottom-[170px] right-[336px] z-[15] w-[80px] pointer-events-none transition-[filter] duration-500"
         style={{
           filter: ROOM_FILTER_BY_WEATHER[weatherKey],
         }}

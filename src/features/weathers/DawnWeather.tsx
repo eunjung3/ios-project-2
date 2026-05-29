@@ -7,9 +7,10 @@ const dawnMist = [
 function DawnWeather() {
     return (
         <div className="relative h-full w-full overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-[#34496f] via-[#a7b6d8] to-[#f2c1ad]" />
-            <div className="absolute left-1/2 top-[190px] h-[240px] w-[620px] -translate-x-1/2 rounded-full bg-[#ffd4b9]/24 blur-3xl" />
-            <div className="absolute left-[42%] top-[260px] h-[120px] w-[120px] rounded-full bg-[#f8d5b8]/45 blur-xl" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#5d6698] via-[#8fa0c8] to-[#f0b8a8]" />
+            <div className="absolute inset-0 bg-[#b89bd7]/12" />
+            <div className="absolute left-[27%] top-[215px] h-[230px] w-[560px] -translate-x-1/2 rounded-full bg-[#ffd7bd]/22 blur-3xl" />
+            <div className="absolute left-[28%] top-[295px] h-[110px] w-[170px] -translate-x-1/2 rounded-full bg-[#ffd1ad]/32 blur-2xl" />
 
             {dawnMist.map((mist) => (
                 <div
@@ -24,8 +25,8 @@ function DawnWeather() {
                 />
             ))}
 
-            <div className="absolute inset-0 bg-gradient-to-t from-[#334050]/24 via-transparent to-[#dbe7ff]/12" />
-            <div className="absolute inset-0 bg-[#f3c8b6]/10 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#5e6685]/18 via-transparent to-[#d9d1ff]/18" />
+            <div className="absolute inset-0 bg-[#e6bfd9]/8 backdrop-blur-[1px]" />
 
             <style>{`
                 @keyframes dawnMist {

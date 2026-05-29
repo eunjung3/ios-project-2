@@ -1,12 +1,14 @@
 const stars = [
     { id: 1, left: "16%", top: "14%", size: 2, delay: "0s" },
     { id: 2, left: "28%", top: "25%", size: 1.5, delay: "-1.2s" },
-    { id: 3, left: "48%", top: "12%", size: 2.5, delay: "-0.7s" },
-    { id: 4, left: "65%", top: "22%", size: 1.5, delay: "-1.8s" },
-    { id: 5, left: "78%", top: "15%", size: 2, delay: "-0.4s" },
-    { id: 6, left: "86%", top: "34%", size: 1.5, delay: "-2s" },
-    { id: 7, left: "38%", top: "40%", size: 1.5, delay: "-1.5s" },
-    { id: 8, left: "58%", top: "47%", size: 2, delay: "-0.9s" },
+    { id: 3, left: "30%", top: "11%", size: 2.5, delay: "-0.7s" },
+    { id: 4, left: "10%", top: "22%", size: 1.5, delay: "-1.8s" },
+    { id: 5, left: "20%", top: "15%", size: 2, delay: "-0.4s" },
+    { id: 6, left: "14%", top: "34%", size: 1.5, delay: "-2s" },
+    { id: 7, left: "33%", top: "40%", size: 1.5, delay: "-1.5s" },
+    { id: 8, left: "25%", top: "47%", size: 2, delay: "-0.9s" },
+    { id: 9, left: "18%", top: "45%", size: 1.5, delay: "0s" },
+    { id: 10, left: "12%", top: "52%", size: 2, delay: "-1.8s" },
 ];
 
 function NightWeather() {
@@ -16,7 +18,7 @@ function NightWeather() {
             <div className="absolute inset-0 bg-[#02040d]/30" />
 
             <div
-                className="absolute left-[27%] top-[120px] h-[88px] w-[88px] rounded-full bg-[#dce7ff]"
+                className="absolute left-[24%] top-[120px] h-[88px] w-[88px] rounded-full bg-[#dce7ff]"
                 style={{
                     WebkitMaskImage: "radial-gradient(circle at 64% 42%, transparent 0 45%, #000 46% 100%)",
                     maskImage: "radial-gradient(circle at 64% 42%, transparent 0 50%, #000 46% 100%)",

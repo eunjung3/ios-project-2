@@ -12,4 +12,5 @@ export type Memory = {
     content: string;
     moodKey: MoodKey;
     weatherKey: WeatherKey;
+    objectKey?: string;
 };

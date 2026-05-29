@@ -67,7 +67,7 @@ function RoomPage() {
                 <div className="mx-auto flex w-[1480px] gap-5">
 
                     {/* LEFT CARD */}
-                    <div className="w-[340px] flex flex-col gap-4">
+                    <div className="w-[320px] flex flex-col gap-4">
 
                         <div className="h-[360px] bg-[#faf8f2] rounded-2xl border border-[#5a4632]/20 overflow-hidden">
                             <RoomCalendarSidebar
@@ -112,6 +112,7 @@ function RoomPage() {
                                 content: value.content,
                                 moodKey: value.moodKey,
                                 weatherKey: value.weatherKey,
+                                objectKey: value.objectKey,
                             },
                         ]);
 

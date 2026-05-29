@@ -51,7 +51,7 @@ export function RoomMemoryPanel({
                         </h2>
 
                         <p className="mt-3 text-sm leading-7 text-[#5a4632]/60">
-                            비어 있는 날짜에는 작은 메모지 하나를 남길 수 있어요.
+                            비어 있는 날짜에는 메모 하나를 남길 수 있어요.
                         </p>
                     </div>
 

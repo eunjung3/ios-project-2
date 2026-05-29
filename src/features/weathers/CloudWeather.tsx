@@ -5,12 +5,39 @@ const cloudLayers = [
     { id: 4, top: "58%", left: "36%", width: "58%", height: "22%", delay: "-3s", duration: "26s", opacity: 0.18 },
 ];
 
+const windowClouds = [
+    { id: 1, top: "15%", left: "4%", width: "230px", delay: "-4s", duration: "32s", opacity: 0.3 },
+    { id: 2, top: "31%", left: "18%", width: "280px", delay: "-14s", duration: "38s", opacity: 0.4 },
+    { id: 3, top: "43%", left: "-4%", width: "260px", delay: "-22s", duration: "42s", opacity: 0.35 },
+];
+
 function CloudWeather() {
     return (
         <div className="relative h-full w-full overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[#65707c] via-[#9ca5ae] to-[#c5c8c8]" />
             <div className="absolute inset-0 bg-[#4b5563]/20 backdrop-blur-[2px]" />
             <div className="absolute left-1/2 top-8 h-[260px] w-[560px] -translate-x-1/2 rounded-full bg-white/12 blur-3xl" />
+
+            {windowClouds.map((cloud) => (
+                <div
+                    key={cloud.id}
+                    className="absolute h-[92px] animate-window-cloud"
+                    style={{
+                        top: cloud.top,
+                        left: cloud.left,
+                        width: cloud.width,
+                        opacity: cloud.opacity,
+                        animationDelay: cloud.delay,
+                        animationDuration: cloud.duration,
+                    }}
+                >
+                    <div className="absolute bottom-0 left-[8%] h-[44%] w-[84%] rounded-full bg-white/60 blur-sm" />
+                    <div className="absolute bottom-[18%] left-[12%] h-[48%] w-[34%] rounded-full bg-white/65 blur-sm" />
+                    <div className="absolute bottom-[24%] left-[34%] h-[64%] w-[38%] rounded-full bg-white/70 blur-sm" />
+                    <div className="absolute bottom-[16%] left-[62%] h-[46%] w-[30%] rounded-full bg-white/68 blur-sm" />
+                    <div className="absolute bottom-[-2%] left-[10%] h-[30%] w-[78%] rounded-full bg-[#d8dde0]/42 blur-sm" />
+                </div>
+            ))}
 
             {cloudLayers.map((cloud) => (
                 <div
@@ -68,8 +95,26 @@ function CloudWeather() {
                     animation: heavyCloud ease-in-out infinite;
                 }
 
+                .animate-window-cloud {
+                    animation: windowCloud ease-in-out infinite;
+                }
+
                 .animate-cloud-fog {
                     animation: cloudFog 12s ease-in-out infinite;
+                }
+
+                @keyframes windowCloud {
+                    0% {
+                        transform: translateX(-10%) scale(0.98);
+                    }
+
+                    50% {
+                        transform: translateX(16%) scale(1.03);
+                    }
+
+                    100% {
+                        transform: translateX(-10%) scale(0.98);
+                    }
                 }
             `}</style>
         </div>
