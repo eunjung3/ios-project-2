@@ -38,7 +38,7 @@ export const WEATHER_OPTIONS: WeatherTone[] = [
     {
         key: "sunset",
         label: "노을",
-        icon: "🌆",
+        icon: "🌇",
         wall: "#231711",
         wallTop: "#321b12",
         floor: "#120a07",
@@ -59,14 +59,14 @@ export const WEATHER_OPTIONS: WeatherTone[] = [
     },
     {
         key: "dawn",
-        label: "새벽",
+        label: "오로라",
         icon: "✨",
-        wall: "#1b2334",
-        wallTop: "#26324a",
-        floor: "#111722",
-        windowTop: "#657fa7",
-        windowBottom: "#d7a69c",
-        accent: "#e6c2b4",
+        wall: "#101827",
+        wallTop: "#172642",
+        floor: "#0a101a",
+        windowTop: "#1b5d6f",
+        windowBottom: "#3b2a68",
+        accent: "#7cffd5",
     },
     {
         key: "cherry",
@@ -79,17 +79,6 @@ export const WEATHER_OPTIONS: WeatherTone[] = [
         windowBottom: "#ffe1cf",
         accent: "#ffc2d7",
     },
-    //   {
-    //     key: "snowy",
-    //     label: "눈",
-    //     icon: "❄️",
-    //     wall: "#171f25",
-    //     wallTop: "#212a30",
-    //     floor: "#0c1115",
-    //     windowTop: "#9db4c5",
-    //     windowBottom: "#526878",
-    //     accent: "#d6e3e8",
-    //   },
 ];
 
 // key로 날씨 정보를 바로 찾기 위한 조회용 맵입니다.

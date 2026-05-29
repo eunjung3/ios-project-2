@@ -1,4 +1,4 @@
-import { useCallback, useRef, type PointerEvent } from "react";
+import { useCallback, useRef, useState, type PointerEvent } from "react";
 import { Check, X } from "lucide-react";
 import RoomImg from "../../assets/room3-clean.png";
 import { ROOM_OBJECT_BY_KEY } from "../../constants/roomObjects";
@@ -29,7 +29,11 @@ type DragOffset = {
 type Props = {
   weatherKey: WeatherKey;
   placedObjects?: PlacedRoomObject[];
-  onObjectSelect?: (objectId: string) => void;
+  activeObjectId?: string;
+  bouncingObjectId?: string;
+  onObjectSelect?: (objectId: string | null) => void;
+  onObjectPreview?: (objectId: string) => void;
+  onObjectEdit?: (objectId: string) => void;
   // 배치 중인 임시 오브젝트와 배치 제어 콜백. 배치 중이 아닐 때는 null
   placementDraft?: PlacementDraft | null;
   onPlacementCancel?: () => void;
@@ -43,7 +47,7 @@ const ROOM_FILTER_BY_WEATHER: Record<WeatherKey, string> = {
   cloud: "saturate(0.72) brightness(0.94) contrast(0.98)",
   sunset: "saturate(1.14) brightness(0.96) sepia(0.18) contrast(1.05)",
   night: "saturate(0.72) brightness(0.7) contrast(1.1) hue-rotate(8deg)",
-  dawn: "saturate(0.9) brightness(0.9) sepia(0.08) contrast(1.02)",
+  dawn: "saturate(0.94) brightness(0.88) contrast(1.04) hue-rotate(6deg)",
   cherry: "saturate(1.04) brightness(1.02) sepia(0.08) contrast(1.01)",
 };
 
@@ -53,7 +57,7 @@ const ROOM_TINT_OPACITY_BY_WEATHER: Record<WeatherKey, number> = {
   cloud: 0.28,
   sunset: 0.36,
   night: 0.42,
-  dawn: 0.3,
+  dawn: 0.28,
   cherry: 0.26,
 };
 
@@ -64,7 +68,11 @@ const clamp = (value: number, min: number, max: number) => {
 export default function Room({
   weatherKey,
   placedObjects = [],
+  activeObjectId,
+  bouncingObjectId,
   onObjectSelect,
+  onObjectPreview,
+  onObjectEdit,
   placementDraft = null,
   onPlacementCancel,
   onPlacementChange,
@@ -72,6 +80,7 @@ export default function Room({
 }: Props) {
   const roomRef = useRef<HTMLDivElement>(null);
   const dragOffsetRef = useRef<DragOffset | null>(null);
+  const [suppressedHoverObjectId, setSuppressedHoverObjectId] = useState<string | null>(null);
   const weatherTone = WEATHER_BY_KEY[weatherKey];
 
   // 포인터 좌표를 방 컨테이너 안의 퍼센트 좌표로 변환. 방 크기가 바뀌어도 오브젝트 위치가 일정하도록 하기 위함
@@ -134,10 +143,21 @@ export default function Room({
     }
   };
 
+  const handleRoomPointerDown = () => {
+    if (!placementDraft) {
+      if (activeObjectId) {
+        setSuppressedHoverObjectId(activeObjectId);
+      }
+
+      onObjectSelect?.(null);
+    }
+  };
+
   return (
     <div
       ref={roomRef}
       className="relative w-full h-full overflow-hidden transition-colors duration-500"
+      onPointerDown={handleRoomPointerDown}
       style={{
         background: `linear-gradient(180deg, ${weatherTone.wallTop}, ${weatherTone.wall})`,
       }}
@@ -157,45 +177,94 @@ export default function Room({
       {/* 위치가 확정되어 저장된 오브젝트들 */}
       {placedObjects.map((placedObject) => {
         const object = ROOM_OBJECT_BY_KEY[placedObject.objectKey];
-        const label = placedObject.title?.trim() || object.label;
+        const label = placedObject.title?.trim() || "제목 없는 기억";
+        const active = placedObject.id === activeObjectId;
+        const bouncing = placedObject.id === bouncingObjectId;
+        const hoverEnabled = !active && suppressedHoverObjectId !== placedObject.id;
 
         return (
           <div
             key={placedObject.id}
-            className="group absolute z-[15] pointer-events-auto select-none hover:z-[25]"
+            className={`absolute pointer-events-auto select-none ${active ? "z-[30]" : hoverEnabled ? "group z-[15] hover:z-[25]" : "z-[15]"}`}
             onPointerDown={(event) => {
               event.stopPropagation();
             }}
-            onClick={() => onObjectSelect?.(placedObject.id)}
+            onPointerEnter={() => {
+              if (!activeObjectId && suppressedHoverObjectId === placedObject.id) {
+                setSuppressedHoverObjectId(null);
+              }
+            }}
+            onPointerLeave={() => {
+              if (!active && suppressedHoverObjectId === placedObject.id) {
+                setSuppressedHoverObjectId(null);
+              }
+            }}
+            onClick={() => {
+              setSuppressedHoverObjectId(placedObject.id);
+              onObjectSelect?.(placedObject.id);
+            }}
             style={{
               left: `${placedObject.position.x}%`,
               top: `${placedObject.position.y}%`,
               transform: "translate(-50%, -100%)",
             }}
           >
-            <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-10
+            {active ? (
+              <div
+                className="absolute bottom-[calc(100%+16px)] left-1/2 z-20 flex -translate-x-1/2 gap-2 whitespace-nowrap rounded-md border border-[#5a4632]/20 bg-[#faf8f2]/95 p-1.5 text-xs text-[#5a4632] shadow-md"
+                onPointerDown={(event) => event.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onObjectPreview?.(placedObject.id);
+                  }}
+                  className="inline-flex items-center gap-1 rounded px-2.5 py-1.5 transition hover:bg-[#5a4632]/10"
+                >
+                  {/* <Eye size={13} /> */}
+                  글 확인하기
+                </button>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onObjectEdit?.(placedObject.id);
+                  }}
+                  className="inline-flex items-center gap-1 rounded px-2.5 py-1.5 transition hover:bg-[#5a4632]/10"
+                >
+                  {/* <Pencil size={13} /> */}
+                  위치 수정하기
+                </button>
+                <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-[#5a4632]/20 bg-[#faf8f2]/95" />
+              </div>
+            ) : hoverEnabled ? (
+              <div className="pointer-events-none absolute bottom-[calc(100%+16px)] left-1/2 z-10
               -translate-x-1/2 whitespace-nowrap rounded-md border border-[#5a4632]/20 bg-[#faf8f2]/95
               px-3 py-1.5 text-xs text-[#5a4632] opacity-0 shadow-md transition-opacity delay-0 duration-150
               group-hover:opacity-100 group-hover:delay-500">
-              {label}
-              <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-[#5a4632]/20 bg-[#faf8f2]/95" />
-            </div>
+                {label}
+                <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-[#5a4632]/20 bg-[#faf8f2]/95" />
+              </div>
+            ) : null}
+
+            {hoverEnabled && (
+              <img
+                src={object.image}
+                alt=""
+                className="pointer-events-none absolute left-0 top-0 opacity-0 transition-opacity delay-0 duration-150 group-hover:opacity-100 group-hover:delay-500"
+                style={{
+                  width: `${object.roomWidth}px`,
+                  transformOrigin: "bottom center",
+                  // filter: "brightness(1.16) saturate(1.08) drop-shadow(0 0 5px rgba(255,248,232,0.95)) drop-shadow(0 0 8px rgba(90,70,50,0.24))",
+                }}
+              />
+            )}
 
             <img
               src={object.image}
               alt=""
-              className="pointer-events-none absolute left-0 top-0 opacity-0 transition-opacity delay-0 duration-150 group-hover:opacity-100 group-hover:delay-500"
-              style={{
-                width: `${object.roomWidth}px`,
-                transformOrigin: "bottom center",
-                // filter: "brightness(1.16) saturate(1.08) drop-shadow(0 0 5px rgba(255,248,232,0.95)) drop-shadow(0 0 8px rgba(90,70,50,0.24))",
-              }}
-            />
-
-            <img
-              src={object.image}
-              alt=""
-              className="cursor-pointer"
+              className={`cursor-pointer ${bouncing ? "mw-room-object-bounce" : ""}`}
               style={{
                 width: `${object.roomWidth}px`,
                 transformOrigin: "bottom center",
@@ -242,16 +311,16 @@ export default function Room({
               <button
                 type="button"
                 onClick={onPlacementConfirm}
-                title="위치 고정"
-                className="grid h-9 w-9 place-items-center rounded-full border border-[#5a4632]/20 bg-[#faf8f2] text-[#5a4632] shadow-md transition hover:bg-white"
+                // title="위치 고정"
+                className="grid h-9 w-9 place-items-center rounded-full border border-[#4f8f68]/30 bg-[#dff3e6] text-[#4f8f68] shadow-md transition hover:bg-[#edf8f1]"
               >
                 <Check size={18} />
               </button>
               <button
                 type="button"
                 onClick={onPlacementCancel}
-                title="취소"
-                className="grid h-9 w-9 place-items-center rounded-full border border-[#5a4632]/20 bg-[#faf8f2] text-[#5a4632] shadow-md transition hover:bg-white"
+                // title="취소"
+                className="grid h-9 w-9 place-items-center rounded-full border border-[#b36a5e]/30 bg-[#f4dfd9] text-[#b36a5e] shadow-md transition hover:bg-[#faebe7]"
               >
                 <X size={18} />
               </button>
@@ -277,7 +346,7 @@ export default function Room({
         style={{
           background: weatherTone.windowBottom,
           mixBlendMode: weatherKey === "sunny" || weatherKey === "dawn" || weatherKey === "cherry" ? "overlay" : "multiply",
-          opacity: weatherKey === "sunny" || weatherKey === "cherry" ? 0.06 : weatherKey === "night" ? 0.18 : 0.12,
+          opacity: weatherKey === "sunny" || weatherKey === "cherry" ? 0.06 : weatherKey === "dawn" ? 0.08 : weatherKey === "night" ? 0.18 : 0.12,
         }}
       />
 

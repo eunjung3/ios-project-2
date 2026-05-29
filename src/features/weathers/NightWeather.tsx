@@ -63,6 +63,7 @@ function NightWeather() {
                 .animate-night-star {
                     animation: nightStar 3s ease-in-out infinite;
                 }
+
             `}</style>
         </div>
     )

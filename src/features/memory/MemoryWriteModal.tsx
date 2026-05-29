@@ -18,12 +18,15 @@ export type WriteModalValue = {
 
 // 오브젝트는 다음 모달 단계에서 고르므로, 작성 초안에는 objectKey를 제외
 type WriteDraftValue = Omit<WriteModalValue, "objectKey">;
+type MemoryWriteMode = "room" | "plaza";
 
 export function MemoryWriteModal({
+    mode = "room",
     initialDate,
     onClose,
     onSave,
 }: {
+    mode?: MemoryWriteMode;
     initialDate: string;
     onClose: () => void;
     onSave: (value: WriteModalValue) => void;
@@ -40,6 +43,7 @@ export function MemoryWriteModal({
     // 값이 생기면 작성 모달에서 오브젝트 선택 모달로 전환
     const [draftValue, setDraftValue] = useState<WriteDraftValue | null>(null);
     const selectedMood = MOOD_BY_KEY[moodKey];
+    const showMoodSelector = mode !== "plaza";
 
     // 작성한 내용을 보관하고 오브젝트 선택 단계로 이동
     const handleNext = () => {
@@ -87,7 +91,7 @@ export function MemoryWriteModal({
                     </button>
                 </div>
 
-                <div className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
+                <div className={showMoodSelector ? "grid gap-5 lg:grid-cols-[1fr_1.1fr]" : "grid gap-5"}>
                     <div className="flex flex-col gap-4">
                         <label className="flex flex-col gap-2 text-sm text-[#5a4632]">
                             날짜
@@ -111,7 +115,8 @@ export function MemoryWriteModal({
                         </label>
                     </div>
 
-                    <div>
+                    {showMoodSelector && (
+                        <div>
                         <p className="mb-2 text-sm text-[#5a4632]">마음 상태</p>
                         <div className="grid grid-cols-3 gap-2">
                             {MOOD_OPTIONS.map((mood) => {
@@ -136,7 +141,8 @@ export function MemoryWriteModal({
                                 );
                             })}
                         </div>
-                    </div>
+                        </div>
+                    )}
                 </div>
 
                 <label className="mt-5 flex flex-col gap-2 text-sm text-[#5a4632]">

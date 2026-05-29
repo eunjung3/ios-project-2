@@ -3,6 +3,12 @@ const sunRays = Array.from({ length: 6 }, (_, i) => ({
     delay: i * 0.4,
 }))
 
+// const windowClouds = [
+//     { id: 1, top: "15%", left: "4%", width: "230px", delay: "-4s", duration: "32s", opacity: 0.3 },
+//     { id: 2, top: "31%", left: "18%", width: "280px", delay: "-14s", duration: "38s", opacity: 0.4 },
+//     { id: 3, top: "43%", left: "-4%", width: "260px", delay: "-22s", duration: "42s", opacity: 0.35 },
+// ];
+
 function SunnyWeather() {
     return (
         <div className="relative h-full w-full overflow-hidden">
@@ -15,7 +21,27 @@ function SunnyWeather() {
 
             {/* 해 */}
             <div className="absolute left-[27%] top-[120px] h-[90px] w-[90px] -translate-x-1/2 rounded-full bg-yellow-200 shadow-[0_0_60px_rgba(255,220,120,0.9)]" />
-
+            {/* 
+            {windowClouds.map((cloud) => (
+                <div
+                    key={cloud.id}
+                    className="absolute h-[92px] animate-window-cloud"
+                    style={{
+                        top: cloud.top,
+                        left: cloud.left,
+                        width: cloud.width,
+                        opacity: cloud.opacity,
+                        animationDelay: cloud.delay,
+                        animationDuration: cloud.duration,
+                    }}
+                >
+                    <div className="absolute bottom-0 left-[8%] h-[44%] w-[84%] rounded-full bg-white/60 blur-sm" />
+                    <div className="absolute bottom-[18%] left-[12%] h-[48%] w-[34%] rounded-full bg-white/65 blur-sm" />
+                    <div className="absolute bottom-[24%] left-[34%] h-[64%] w-[38%] rounded-full bg-white/70 blur-sm" />
+                    <div className="absolute bottom-[16%] left-[62%] h-[46%] w-[30%] rounded-full bg-white/68 blur-sm" />
+                    <div className="absolute bottom-[-2%] left-[10%] h-[30%] w-[78%] rounded-full bg-[#d8dde0]/42 blur-sm" />
+                </div>
+            ))} */}
             {/* 햇빛 광선 */}
             {sunRays.map((ray) => (
                 <div

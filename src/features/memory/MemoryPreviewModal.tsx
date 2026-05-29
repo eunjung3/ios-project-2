@@ -1,4 +1,4 @@
-import { CalendarDays, X } from "lucide-react";
+import { CalendarDays, Pencil, X } from "lucide-react";
 import { MOOD_BY_KEY } from "../../constants/mood";
 import { ROOM_OBJECT_BY_KEY } from "../../constants/roomObjects";
 import type { Memory } from "../../types/memory";
@@ -26,14 +26,24 @@ export function MemoryPreviewModal({ memory, onClose }: Props) {
                         )}
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        aria-label="닫기"
-                        className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-[#5a4632]/10 text-[#5a4632] hover:bg-black/5"
-                    >
-                        <X size={17} />
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="수정하기"
+                            className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-[#5a4632]/10 text-[#5a4632] hover:bg-black/5"
+                        >
+                            <Pencil size={17} />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="닫기"
+                            className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-[#5a4632]/10 text-[#5a4632] hover:bg-black/5"
+                        >
+                            <X size={17} />
+                        </button>
+                    </div>
                 </div>
 
                 <div className="mb-4 flex items-center justify-between gap-3 text-sm text-[#5a4632]/75">

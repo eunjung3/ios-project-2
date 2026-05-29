@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Room from "../room/Room"
 import RoomCalendarSidebar from "../calendar/RoomCalendarSidebar";
 import { RoomMemoryPanel } from "../memory/RoomMemoryPanel";
@@ -43,7 +43,11 @@ function RoomPage() {
     const [memories, setMemories] = useState<Memory[]>([]);
     // 사용자가 오브젝트 위치를 고르는 동안 작성한 메모리를 임시로 보관
     const [pendingPlacement, setPendingPlacement] = useState<PendingPlacement | null>(null);
+    const [activeObjectId, setActiveObjectId] = useState<string | null>(null);
+    const [bouncingObjectId, setBouncingObjectId] = useState<string | null>(null);
     const [previewMemory, setPreviewMemory] = useState<Memory | null>(null);
+    const bounceStartTimerRef = useRef<number | null>(null);
+    const bounceEndTimerRef = useRef<number | null>(null);
 
 
     const selectedMemory = memories.find(
@@ -63,8 +67,60 @@ function RoomPage() {
 
     // 날짜 선택
     const handleSelectDate = (date: string) => {
+        setActiveObjectId(null);
         setSelectedDate(date);
+
+        const targetMemory = memories.find(
+            (memory) => memory.memoryDate === date && memory.objectKey && memory.objectPosition
+        );
+
+        if (bounceStartTimerRef.current !== null) {
+            window.clearTimeout(bounceStartTimerRef.current);
+        }
+
+        if (bounceEndTimerRef.current !== null) {
+            window.clearTimeout(bounceEndTimerRef.current);
+        }
+
+        setBouncingObjectId(null);
+
+        if (!targetMemory) {
+            return;
+        }
+
+        bounceStartTimerRef.current = window.setTimeout(() => {
+            setBouncingObjectId(targetMemory.id);
+            bounceStartTimerRef.current = null;
+
+            bounceEndTimerRef.current = window.setTimeout(() => {
+                setBouncingObjectId(null);
+                bounceEndTimerRef.current = null;
+            }, 700);
+        }, 0);
     };
+
+    const handleOpenWriteModal = () => {
+        setActiveObjectId(null);
+        setIsWriteOpen(true);
+    };
+
+    const handlePagePointerDown = () => {
+        if (activeObjectId) {
+            setActiveObjectId(null);
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (bounceStartTimerRef.current !== null) {
+                window.clearTimeout(bounceStartTimerRef.current);
+            }
+
+            if (bounceEndTimerRef.current !== null) {
+                window.clearTimeout(bounceEndTimerRef.current);
+            }
+        };
+    }, []);
 
     // 체크 버튼을 누르면 메모리와 오브젝트의 최종 위치를 함께 저장합니다.
     const handleConfirmPlacement = () => {
@@ -93,10 +149,11 @@ function RoomPage() {
 
         setPendingPlacement(null);
         setSelectedDate(value.memoryDate);
+        setActiveObjectId(null);
     };
 
     return (
-        <div className="mw-app min-h-screen flex flex-col select-none">
+        <div className="mw-app min-h-screen flex flex-col select-none" onPointerDown={handlePagePointerDown}>
             <AppHeader />
 
             {/* <button
@@ -130,7 +187,7 @@ function RoomPage() {
                             <RoomMemoryPanel
                                 selectedDate={selectedDate}
                                 selectedMemory={selectedMemory}
-                                onWrite={() => setIsWriteOpen(true)}
+                                onWrite={handleOpenWriteModal}
                             // weatherText="맑음"
                             />
                         </div>
@@ -141,10 +198,21 @@ function RoomPage() {
                         <Room
                             weatherKey={roomWeather}
                             placedObjects={placedRoomObjects}
-                            onObjectSelect={(objectId) => {
+                            activeObjectId={activeObjectId ?? undefined}
+                            bouncingObjectId={bouncingObjectId ?? undefined}
+                            onObjectSelect={setActiveObjectId}
+                            onObjectPreview={(objectId) => {
                                 const memory = memories.find((item) => item.id === objectId);
                                 if (memory) {
+                                    setActiveObjectId(null);
                                     setPreviewMemory(memory);
+                                }
+                            }}
+                            onObjectEdit={(objectId) => {
+                                const memory = memories.find((item) => item.id === objectId);
+                                if (memory) {
+                                    setActiveObjectId(null);
+                                    setSelectedDate(memory.memoryDate);
                                 }
                             }}
                             placementDraft={pendingPlacement ? {
