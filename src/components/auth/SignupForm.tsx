@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { setAuthenticated } from "../../utils/authSession";
+import { setAuthenticated, setProfileNickname } from "../../utils/authSession";
 // import { useAppStore } from "../../stores/AppStore";
 
 // 백엔드 회원가입 API를 호출하고 성공하면 내 방으로 이동시키는 폼입니다.
@@ -113,6 +113,8 @@ export function SignupForm() {
             // 이번 API 연동 변경: 가입 정보는 /api/auth/signup을 통해 DB에 저장됩니다.
             // await signup({ email, password, nickname });
             setAuthenticated();
+            // 회원가입 직후 마이페이지에서 입력한 닉네임이 바로 보이도록 임시 프로필 저장소에 동기화합니다.
+            setProfileNickname(nickname.trim());
             navigate("/room", { replace: true });
         } catch {
             setError("회원가입에 실패했습니다. 다시 시도해주세요.");

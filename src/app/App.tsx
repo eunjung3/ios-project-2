@@ -6,6 +6,7 @@ import { SignupPage } from "../features/pages/SignupPage";
 import { LandingPage } from "../features/pages/LandingPage";
 import { isAuthenticated } from "../utils/authSession";
 import "../styles/App.css";
+import MyPage from "../features/pages/MyPage";
 
 type RouteGuardProps = {
   children: ReactNode;
@@ -72,6 +73,14 @@ function App() {
           <AuthEntryRoute>
             <SignupPage />
           </AuthEntryRoute>
+        }
+      />
+      <Route
+        path="/mypage"
+        element={
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
         }
       />
       <Route path="*" element={<FallbackRoute />} />

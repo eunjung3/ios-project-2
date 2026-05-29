@@ -30,9 +30,6 @@ export function AppHeader() {
                     </button> */}
                     {/* <button type="button" className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">
                         우편함
-                    </button>
-                    <button type="button" className="p-2 rounded-md hover:bg-[#5a4632]/10 hover:text-[#5a4632] transition-colors">
-                        마이페이지
                     </button> */}
                     {/* <button
                         type="button"
@@ -41,14 +38,14 @@ export function AppHeader() {
                     >
                         <Plus size={14} />
                     </button> */}
-                    <button
-                        type="button"
+                    <Link
+                        to="/mypage"
                         className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80"
                         title="마이페이지"
                         aria-label="마이페이지"
                     >
                         <UserRound size={14} />
-                    </button>
+                    </Link>
                     <button
                         type="button"
                         className="p-2 rounded-md border border-[#5a4632]/20 hover:bg-[#5a4632]/10 text-[#5a4632]/80"
