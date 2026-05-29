@@ -11,10 +11,10 @@ function SunnyWeather() {
             <div className="absolute inset-0 bg-gradient-to-b from-[#8fd3ff] via-[#bfe7ff] to-[#eef9ff]" />
 
             {/* 햇빛 glow */}
-            <div className="absolute left-[30%] top-[120px] h-[200px] w-[200px] -translate-x-1/2 rounded-full bg-yellow-200/60 blur-3xl" />
+            <div className="absolute left-[30%] top-[110px] h-[200px] w-[200px] -translate-x-1/2 rounded-full bg-yellow-200/60 blur-3xl" />
 
             {/* 해 */}
-            <div className="absolute left-[27%] top-[130px] h-[90px] w-[90px] -translate-x-1/2 rounded-full bg-yellow-200 shadow-[0_0_60px_rgba(255,220,120,0.9)]" />
+            <div className="absolute left-[27%] top-[120px] h-[90px] w-[90px] -translate-x-1/2 rounded-full bg-yellow-200 shadow-[0_0_60px_rgba(255,220,120,0.9)]" />
 
             {/* 햇빛 광선 */}
             {sunRays.map((ray) => (

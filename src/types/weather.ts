@@ -1,4 +1,4 @@
-export type WeatherKey = "sunny" | "rain" | "cloud" | "sunset" | "night" | "dawn";
+export type WeatherKey = "sunny" | "rain" | "cloud" | "sunset" | "night" | "dawn" | "cherry";
 
 export type WeatherTone = {
     key: WeatherKey;

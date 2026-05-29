@@ -9,7 +9,7 @@ export const MOOD_OPTIONS: MoodOption[] = [
     { key: "disgust", label: "혐오", icon: "🤢", weatherKey: "cloud" },
     { key: "calm", label: "평온", icon: "😌", weatherKey: "dawn" },
     { key: "depressed", label: "우울", icon: "😔", weatherKey: "rain" },
-    { key: "flutter", label: "설렘", icon: "😍", weatherKey: "sunny" },
+    { key: "flutter", label: "설렘", icon: "😍", weatherKey: "cherry" },
     { key: "confused", label: "혼란", icon: "😵", weatherKey: "cloud" },
     { key: "tired", label: "피곤함", icon: "😴", weatherKey: "night" },
     { key: "longing", label: "그리움", icon: "😶", weatherKey: "dawn" },

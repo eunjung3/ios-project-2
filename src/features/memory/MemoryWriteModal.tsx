@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import { useState, useMemo } from "react";
 import type { WeatherKey } from "../../types/weather";
 import type { MoodKey } from "../../types/mood";
+import type { RoomObjectKey } from "../../types/roomObject";
 import { MOOD_BY_KEY, MOOD_OPTIONS } from "../../constants/mood";
 import { MemoryObjectSelectModal } from "./MemoryObjectSelectModal";
 
@@ -11,10 +12,11 @@ export type WriteModalValue = {
     content: string;
     moodKey: MoodKey;
     weatherKey: WeatherKey;
-    objectKey: string;
+    objectKey: RoomObjectKey;
     //   slotKey: ObjectSlotKey;
 };
 
+// 오브젝트는 다음 모달 단계에서 고르므로, 작성 초안에는 objectKey를 제외
 type WriteDraftValue = Omit<WriteModalValue, "objectKey">;
 
 export function MemoryWriteModal({
@@ -35,9 +37,11 @@ export function MemoryWriteModal({
     const [content, setContent] = useState("");
 
     const [moodKey, setMoodKey] = useState<MoodKey>("joy");
+    // 값이 생기면 작성 모달에서 오브젝트 선택 모달로 전환
     const [draftValue, setDraftValue] = useState<WriteDraftValue | null>(null);
     const selectedMood = MOOD_BY_KEY[moodKey];
 
+    // 작성한 내용을 보관하고 오브젝트 선택 단계로 이동
     const handleNext = () => {
         setDraftValue({
             memoryDate,
@@ -48,6 +52,7 @@ export function MemoryWriteModal({
         });
     };
 
+    // 2단계: 이 메모리를 방 안에서 어떤 오브젝트로 남길지 선택
     if (draftValue) {
         return (
             <MemoryObjectSelectModal
@@ -148,13 +153,13 @@ export function MemoryWriteModal({
 
                 {/* FOOTER */}
                 <div className="mt-6 flex justify-end gap-3">
-                    <button
+                    {/* <button
                         type="button"
                         onClick={onClose}
                         className="border border-[#9b6b54]/60 bg-[#9b6b54]/10 hover:bg-[#9b6b54]/20 rounded-md px-5 py-2 text-sm text-[#9b6b54]/80"
                     >
                         닫기
-                    </button>
+                    </button> */}
                     <button
                         type="button"
                         onClick={handleNext}

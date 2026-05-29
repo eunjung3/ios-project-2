@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { WEATHER_BY_KEY } from "../../constants/weather";
 import type { Memory } from "../../types/memory";
 
 export default function Calendar({
@@ -66,7 +67,7 @@ export default function Calendar({
             </div>
 
             {/* CALENDAR */}
-            <div className="grid grid-cols-7 gap-1">
+            <div className="grid grid-cols-[repeat(7,36px)] gap-x-[6px] gap-y-1">
 
                 {/* DAY */}
                 {days.map((day) => (
@@ -82,7 +83,7 @@ export default function Calendar({
                 {dates.map((date, index) => {
                     if (!date) {
                         return (
-                            <div key={index} className="h-9" />
+                            <div key={index} className="h-9 w-9" />
                         );
                     }
 
@@ -92,9 +93,10 @@ export default function Calendar({
 
                     const isSelected = selectedDate === dateString;
 
-                    const hasMemory = memories.some(
+                    const memoryForDate = memories.find(
                         (memory) => memory.memoryDate === dateString
                     );
+                    const weatherForDate = memoryForDate ? WEATHER_BY_KEY[memoryForDate.weatherKey] : null;
 
                     return (
                         <button
@@ -105,7 +107,7 @@ export default function Calendar({
                                 onSelectDate(dateString);
                             }}
                             className={`
-                                flex  flex-col h-9 rounded-md flex items-center justify-center text-[12px]
+                                flex h-9 w-9 flex-col items-center justify-center rounded-md text-[12px]
                                 transition-colors cursor-pointer
 
                                 ${!date
@@ -119,9 +121,16 @@ export default function Calendar({
                         >
                             <span>{date}</span>
 
-                            {hasMemory && (
-                                <span className="mt-0.5 h-1 w-1 rounded-full bg-[#5a4632]/80" />
+                            {weatherForDate && (
+                                <span
+                                    className="mt-0.5 block h-3 shrink-0 text-[10px] leading-none"
+                                    title={weatherForDate.label}
+                                    aria-label={weatherForDate.label}
+                                >
+                                    {weatherForDate.icon}
+                                </span>
                             )}
+                            {/* <span>☔</span> */}
                         </button>
                     );
                 })}

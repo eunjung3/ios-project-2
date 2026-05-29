@@ -23,6 +23,7 @@
     --mw-overlay: rgba(39, 32, 33, 0.42);
 }
 
+/* font: inherit; */
 .mw-input {
     width: 100%;
     border-radius: 8px;
@@ -40,6 +41,21 @@
     border-color: color-mix(in srgb, var(--mw-accent) 64%, transparent);
 }
 
+.nickname-input {
+    width: min(240px, 58%);
+    border: 1px solid var(--mw-border-strong);
+    border-radius: 8px;
+    background: var(--mw-input);
+    color: var(--mw-text);
+    text-align: right;
+    outline: none;
+}
+
+/* 포커스 상태는 입력 중인 행만 조용히 강조합니다. */
+.nickname-input:focus {
+    border-color: color-mix(in srgb, var(--mw-accent) 64%, transparent);
+}
+
 .mw-app {
     background:
         radial-gradient(circle at 18% 10%, var(--mw-bg-glow-1), transparent 32%),
@@ -53,6 +69,71 @@
     /* 카드, 모달, 사이드바처럼 조용히 떠 있는 표면 스타일입니다. */
     background: var(--mw-panel);
     border: 1px solid var(--mw-border);
+}
+
+.mw-form-page {
+    min-height: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.mw-profile-card {
+    width: min(440px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.mw-profile-eyebrow {
+    margin: 0 0 2px;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: #e0d2ba;
+}
+
+.mw-profile-card h1 {
+    margin: 0;
+    color: var(--mw-text);
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.mw-profile-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--mw-border);
+    font-size: 0.875rem;
+}
+
+.mw-profile-row span {
+    color: var(--mw-muted);
+}
+
+.mw-profile-row strong {
+    color: var(--mw-text);
+    font-weight: 400;
+}
+
+.mw-profile-message {
+    margin: 0;
+    color: var(--mw-muted);
+    font-size: 0.875rem;
+}
+
+.mw-profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
 }
 
 .mw-button {

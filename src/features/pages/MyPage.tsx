@@ -6,8 +6,6 @@ import {
   getProfileNickname,
   setProfileNickname,
 } from "../../utils/authSession";
-import "../../styles/MyPage.css";
-import "../../styles/App.css";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -53,25 +51,24 @@ function MyPage() {
   }
 
   return (
-    <div className="mw-app min-h-screen flex flex-col">
+    <div className="mw-app min-h-screen flex flex-col select-none">
       <AppHeader />
 
-      <main className="mypage flex-1">
-        <section className="profile-card">
-          <p className="label">PROFILE</p>
+      <main className="mw-form-page min-h-0 flex-1 overflow-auto">
+        <section className="mw-surface mw-profile-card">
+          <p className="mw-profile-eyebrow">PROFILE</p>
           <h1>{nickname}님의 마음 기록</h1>
 
-          <div className="info-row">
+          <div className="mw-profile-row">
             <span>이메일</span>
             <strong>admin@maeum.weather</strong>
           </div>
 
-          <div className="info-row">
+          <div className="mw-profile-row">
             <span>닉네임</span>
-            {/* 정보수정 중에는 기존 표시 텍스트 자리에 닉네임 입력창을 그대로 보여줍니다. */}
             {isEditingNickname ? (
               <input
-                className="nickname-input"
+                className="nickname-input h-11 px-3 text-sm"
                 value={nicknameDraft}
                 maxLength={20}
                 onChange={(event) => setNicknameDraft(event.target.value)}
@@ -91,45 +88,47 @@ function MyPage() {
             )}
           </div>
 
-          <div className="info-row">
+          <div className="mw-profile-row">
             <span>가입일</span>
             <strong>2026.05.01</strong>
           </div>
 
-          {message && <p className="profile-message">{message}</p>}
+          {message && <p className="mw-profile-message">{message}</p>}
 
-          <div className="profile-actions">
+          <div className="mw-profile-actions">
             {/* 편집 상태에 따라 정보수정 버튼을 저장/취소 버튼으로 전환합니다. */}
             {isEditingNickname ? (
               <>
                 <button
                   type="button"
-                  className="edit-profile-btn"
+                  className="mw-button-solid rounded-md px-5 py-2 text-sm"
                   onClick={handleSaveNickname}
                 >
                   저장
                 </button>
                 <button
                   type="button"
-                  className="cancel-profile-btn"
+                  className="mw-button rounded-md px-5 py-2 text-sm"
                   onClick={handleCancelEdit}
                 >
                   취소
                 </button>
               </>
             ) : (
-              <button
-                type="button"
-                className="edit-profile-btn"
-                onClick={handleStartEdit}
-              >
-                정보수정
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="mw-button-solid rounded-md px-5 py-2 text-sm"
+                  onClick={handleStartEdit}
+                >
+                  정보수정
+                </button>
+                <button type="button" className="mw-button rounded-md px-5 py-2 text-sm" onClick={handleLogout}>
+                  로그아웃
+                </button>
+              </>
             )}
-            {/* AppHeader 로그아웃과 같은 인증 해제/랜딩 이동 흐름을 사용합니다. */}
-            <button type="button" className="logout-btn" onClick={handleLogout}>
-              로그아웃
-            </button>
+
           </div>
         </section>
       </main>

@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
-import FurnitureBooks from "../../assets/furniture-modular/furniture-books.png";
-import FurnitureDresser from "../../assets/furniture-modular/furniture-dresser.png";
-import FurnitureFrame from "../../assets/furniture-modular/furniture-frame.png";
-import FurniturePlant from "../../assets/furniture-modular/furniture-plant.png";
-
-const OBJECT_OPTIONS = [
-    { key: "plant", label: "화분", image: FurniturePlant },
-    { key: "books", label: "책", image: FurnitureBooks },
-    { key: "frame", label: "액자", image: FurnitureFrame },
-    { key: "dresser", label: "서랍장", image: FurnitureDresser },
-];
+import { ROOM_OBJECT_OPTIONS } from "../../constants/roomObjects";
+import type { RoomObjectKey } from "../../types/roomObject";
 
 export function MemoryObjectSelectModal({
     onBack,
@@ -19,9 +10,9 @@ export function MemoryObjectSelectModal({
 }: {
     onBack: () => void;
     onClose: () => void;
-    onSave: (objectKey: string) => void;
+    onSave: (objectKey: RoomObjectKey) => void;
 }) {
-    const [selectedObjectKey, setSelectedObjectKey] = useState(OBJECT_OPTIONS[0].key);
+    const [selectedObjectKey, setSelectedObjectKey] = useState<RoomObjectKey>(ROOM_OBJECT_OPTIONS[0].key);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4 backdrop-blur-sm select-none">
@@ -41,7 +32,7 @@ export function MemoryObjectSelectModal({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    {OBJECT_OPTIONS.map((object) => {
+                    {ROOM_OBJECT_OPTIONS.map((object) => {
                         const selected = selectedObjectKey === object.key;
 
                         return (
@@ -76,6 +67,7 @@ export function MemoryObjectSelectModal({
                     </button>
                     <button
                         type="button"
+                        // 여기서는 오브젝트 키만 넘기고 실제 위치 배치는 RoomPage에서 처리
                         onClick={() => onSave(selectedObjectKey)}
                         className="mw-button-solid rounded-md px-5 py-2 text-sm"
                     >
